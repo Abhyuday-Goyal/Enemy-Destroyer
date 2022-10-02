@@ -8,3 +8,7 @@ playerX = 370
 playerY = 480
 playerX_change = 0
 enemyimg = pygame.image.load("enemy.png")
+enemyX = random.randint(0,800)
+enemyY = random.randint(50,150)
+enemyX_change = 0.3
+enemyY_change = 0
