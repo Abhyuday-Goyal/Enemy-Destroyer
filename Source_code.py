@@ -48,7 +48,9 @@ def emy(x,y):
 def my(x,y):
     screen.blit(myimg, (x, y))
 def fire_bullet(x,y):
-    global bullet_state  # using global to acess value of bullet state given outside the function 
+    global bullet_state  # using global to acess value of bullet state given outside the function
+    bullet_state = 'fire'
+    screen.blit(bulletimg,(x+16,y+10)) # x + 16 and y+ 10 to make sure bullet fires from the centre if spaceship 
 run = True
 while run:
     screen.fill((255, 0, 0))  # for colour of screen( still in the while loop running continously)
