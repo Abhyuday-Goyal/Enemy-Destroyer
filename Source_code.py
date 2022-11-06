@@ -10,25 +10,11 @@ playerY = 480
 playerX_change = 0
 #enemy
 enemyimg = pygame.image.load("enemy.png")
-enemyX = random.randint(0,800)
+enemyX = random.randint(0,735)
 enemyY = random.randint(50,150)
 enemyX_change = 0.3
 enemyY_change = 40
-nemyimg = pygame.image.load("enemy.png")
-nemyX = random.randint(0,800)
-nemyY = random.randint(50,150)
-nemyX_change = 0.3
-nemyY_change = 40
-emyimg = pygame.image.load("enemy.png")
-emyX = random.randint(0,800)
-emyY = random.randint(50,150)
-emyX_change = 0.3
-emyY_change = 40
-myimg = pygame.image.load("enemy.png")
-myX = random.randint(0,800)
-myY = random.randint(50,150)
-myX_change = 0.3
-myY_change = 40
+
 #bullet
 # Ready: bullet not visible
 # fire: bullet visible
@@ -36,22 +22,25 @@ bulletimg = pygame.image.load("img_3.png")
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
-bulletY_change = 10
+bulletY_change = 5
 bullet_state = 'ready'
+score = 0
 def player(x,y):
     screen.blit(playerimg,(x,y))# we assign the img the x and y coordinates
 def enemy(x,y):
     screen.blit(enemyimg,(x,y))# we assign the img the x and y coordinates
-def nemy(x,y):
-    screen.blit(nemyimg,(x,y))
-def emy(x,y):
-    screen.blit(emyimg,(x,y))
-def my(x,y):
-    screen.blit(myimg, (x, y))
 def fire_bullet(x,y):
     global bullet_state  # using global to access value of bullet state given outside the function
     bullet_state = 'fire'
     screen.blit(bulletimg,(x+16,y+10)) # x + 16 and y+ 10 to make sure bullet fires from the centre if spaceship
+def isCollision(enemyX,enemyY,bulletX,bulletY):
+    distance = math.sqrt((math.pow(enemyX-bulletY,2))+ (math.pow(enemyY-bulletY,2)))
+    if distance<27:
+        return True
+    else:
+        return False
+
+
 run = True
 while run:
     screen.fill((255, 0, 0))  # for colour of screen( still in the while loop running continously)
@@ -66,8 +55,9 @@ while run:
                 playerX_change += 0.5
                 #print("Right arrow is pressed")
             if i.key == pygame.K_SPACE:
-                bulletX = playerX
-                fire_bullet(bulletX,bulletY)
+                if bullet_state is 'ready':
+                    bulletX = playerX
+                    fire_bullet(bulletX,bulletY)
         if i.type == pygame.KEYUP:
             if i.key == pygame.K_LEFT or i.key == pygame.K_RIGHT:
                 playerX_change = 0#So that when we release the key, it stops
@@ -84,42 +74,24 @@ while run:
     elif enemyX >= 736:
         enemyX_change = -1
         enemyY += enemyY_change
-    nemyX += nemyX_change
-    if nemyX <= 0:
-        nemyX_change = 1
-        nemyY += nemyY_change
-    elif nemyX >= 736:
-        nemyX_change = -1
-        nemyY += nemyY_change
-    emyX += emyX_change
-    if emyX <= 0:
-        emyX_change = 1
-        emyY += emyY_change
-    elif emyX >= 736:
-        emyX_change = -1
-        emyY += emyY_change
-    myX += myX_change
-    if myX <= 0:
-        myX_change = 1
-        myY += myY_change
-    elif myX >= 736:
-        myX_change = -1
-        myY += myY_change
+
 #bullet movement
     if bulletY <= 0:
         bulletY = 400
         bullet_state = 'ready'
+        score += 1
+        print(score)
+        enemyX = random.randint(0, 735)
+        enemyY = random.randint(50, 150)
 
     if bullet_state is 'fire':
-        fire_bullet(playerX,bulletY)
+        fire_bullet(bulletX,bulletY)
         bulletY -= bulletY_change
+#for collisions
+    collision = isCollision(enemyX,enemyY,bulletX,bulletY)
+    if collision:
+        bulletY = 480
+        bullet_state = 'ready'
     player(playerX, playerY)
     enemy(enemyX,enemyY)
-    nemy(nemyX,nemyY)
-    emy(emyX,emyY)
-    my(myX,myY)
     pygame.display.update()  # to keep updating the game
-
-
-
-
