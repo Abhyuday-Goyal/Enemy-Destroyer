@@ -7,7 +7,7 @@ playerimg = pygame.image.load("shooter.png")
 playerX = 370
 playerY = 480
 playerX_change = 0
-#enemies
+#enemy
 enemyimg = pygame.image.load("enemy.png")
 enemyX = random.randint(0,800)
 enemyY = random.randint(50,150)
@@ -35,7 +35,7 @@ bulletimg = pygame.image.load("img_3.png")
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
-bulletY_change = 40
+bulletY_change = 10
 bullet_state = 'ready'
 def player(x,y):
     screen.blit(playerimg,(x,y))# we assign the img the x and y coordinates
@@ -48,9 +48,9 @@ def emy(x,y):
 def my(x,y):
     screen.blit(myimg, (x, y))
 def fire_bullet(x,y):
-    global bullet_state  # using global to acess value of bullet state given outside the function
+    global bullet_state  # using global to access value of bullet state given outside the function
     bullet_state = 'fire'
-    screen.blit(bulletimg,(x+16,y+10)) # x + 16 and y+ 10 to make sure bullet fires from the centre if spaceship 
+    screen.blit(bulletimg,(x+16,y+10)) # x + 16 and y+ 10 to make sure bullet fires from the centre if spaceship
 run = True
 while run:
     screen.fill((255, 0, 0))  # for colour of screen( still in the while loop running continously)
@@ -64,6 +64,9 @@ while run:
             if i.key == pygame.K_RIGHT:
                 playerX_change += 0.5
                 #print("Right arrow is pressed")
+            if i.key == pygame.K_SPACE:
+                bulletX = playerX
+                fire_bullet(bulletX,bulletY)
         if i.type == pygame.KEYUP:
             if i.key == pygame.K_LEFT or i.key == pygame.K_RIGHT:
                 playerX_change = 0#So that when we release the key, it stops
@@ -101,9 +104,21 @@ while run:
     elif myX >= 736:
         myX_change = -1
         myY += myY_change
+#bullet movement
+    if bulletY <= 0:
+        bulletY = 400
+        bullet_state = 'ready'
+
+    if bullet_state is 'fire':
+        fire_bullet(playerX,bulletY)
+        bulletY -= bulletY_change
     player(playerX, playerY)
     enemy(enemyX,enemyY)
     nemy(nemyX,nemyY)
     emy(emyX,emyY)
     my(myX,myY)
     pygame.display.update()  # to keep updating the game
+
+
+
+
