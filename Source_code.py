@@ -37,10 +37,15 @@ score_val = 0
 font = pygame.font.Font('freesansbold.ttf',32)
 textX = 10
 textY = 10
+#text for game over
+over_font = pygame.font.Font('freesansbold.ttf',64)
+
 def show_score(x,y):
     score = font.render('score: '+ str(score_val), True, (255,255,255))
     screen.blit(score,(x,y))
-
+def game_over():
+    over_score = over_font.render('Game Over' , True, (255, 255, 255))
+    screen.blit(over_score,(200,250))
 def player(x,y):
     screen.blit(playerimg,(x,y))# we assign the img the x and y coordinates
 def enemy(x,y,i):
@@ -81,7 +86,14 @@ while run:
         playerX=0
     elif playerX>= 736:
         playerX = 736
+
     for i in range(num):
+        #game over code:
+        if enemyY[i]>480:
+            for j in range(num):
+                enemyY[j] = 2000
+            game_over()
+            break
         enemyX[i] += enemyX_change[i]
         if enemyX[i] <= 0:
             enemyX_change[i] = 1
