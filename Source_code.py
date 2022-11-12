@@ -26,7 +26,7 @@ for i in range(num):
 #bullet
 # Ready: bullet not visible
 # fire: bullet visible
-bulletimg = pygame.image.load("img_3.png")
+bulletimg = pygame.image.load("img.png")
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
